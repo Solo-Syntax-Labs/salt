@@ -47,6 +47,7 @@ interface Order {
   status: OrderStatus
   notes?: string | null
   createdAt: string | Date
+  updatedAt: string | Date
   statusHistory: StatusHistoryEntry[]
 }
 
@@ -135,20 +136,20 @@ export function AdminOrderDetail({ order: initialOrder }: Props) {
             <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5 }}>WhatsApp Actions</Typography>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               <WhatsAppButton
-                href={buildCustomerWALink(order as Parameters<typeof buildCustomerWALink>[0])}
+                href={buildCustomerWALink(order as unknown as Parameters<typeof buildCustomerWALink>[0])}
                 label="Message Customer"
                 variant="customer"
                 size="medium"
               />
               <WhatsAppButton
-                href={buildTeamWALink(order as Parameters<typeof buildTeamWALink>[0])}
+                href={buildTeamWALink(order as unknown as Parameters<typeof buildTeamWALink>[0])}
                 label="Alert Team"
                 variant="team"
                 size="medium"
               />
               {order.status !== 'PENDING' && (
                 <WhatsAppButton
-                  href={buildStatusUpdateWALink(order as Parameters<typeof buildStatusUpdateWALink>[0])}
+                  href={buildStatusUpdateWALink(order as unknown as Parameters<typeof buildStatusUpdateWALink>[0])}
                   label="Send Status Update"
                   variant="customer"
                   size="medium"

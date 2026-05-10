@@ -56,6 +56,7 @@ interface SellRequestData {
   status: SellRequestStatus
   notes?: string | null
   createdAt: string | Date
+  updatedAt: string | Date
   statusHistory: SellStatusHistoryEntry[]
 }
 
@@ -157,20 +158,20 @@ export function AdminSellRequestDetail({ sell: initialSell }: Props) {
             <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 1.5 }}>WhatsApp Actions</Typography>
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               <WhatsAppButton
-                href={buildSellerConfirmWALink(sell as Parameters<typeof buildSellerConfirmWALink>[0])}
+                href={buildSellerConfirmWALink(sell as unknown as Parameters<typeof buildSellerConfirmWALink>[0])}
                 label="Message Seller"
                 variant="customer"
                 size="medium"
               />
               <WhatsAppButton
-                href={buildTeamSellAlertWALink(sell as Parameters<typeof buildTeamSellAlertWALink>[0])}
+                href={buildTeamSellAlertWALink(sell as unknown as Parameters<typeof buildTeamSellAlertWALink>[0])}
                 label="Alert Team"
                 variant="team"
                 size="medium"
               />
               {sell.status !== 'PENDING' && (
                 <WhatsAppButton
-                  href={buildSellStatusUpdateWALink(sell as Parameters<typeof buildSellStatusUpdateWALink>[0])}
+                  href={buildSellStatusUpdateWALink(sell as unknown as Parameters<typeof buildSellStatusUpdateWALink>[0])}
                   label="Send Status Update"
                   variant="customer"
                   size="medium"
