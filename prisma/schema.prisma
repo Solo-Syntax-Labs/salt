@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Order {
+  id             String         @id @default(cuid())
+  orderNumber    String         @unique
+
+  customerName   String
+  email          String
+  phone          String
+  address        String
+
+  productVariant ProductVariant
+  quantity       Int
+  pricePerUnit   Decimal        @db.Decimal(10, 2)
+  totalPrice     Decimal        @db.Decimal(10, 2)
+  expectedDelivery DateTime
+
+  status         OrderStatus    @default(PENDING)
+  notes          String?
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  statusHistory  StatusHistory[]
+}
+
+model StatusHistory {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id])
+  status    OrderStatus
+  note      String?
+  changedBy String?
+  changedAt DateTime    @default(now())
+}
+
+enum ProductVariant {
+  PACK_500G
+  PACK_1KG
+  PACK_10KG
+  BULK_1TON
+  BULK_2TON
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  DISPATCHED
+  IN_TRANSIT
+  DELIVERED
+  CANCELLED
+}
+
+model SellRequest {
+  id                  String              @id @default(cuid())
+  sellRequestNumber   String              @unique
+
+  sellerName          String
+  email               String
+  phone               String
+  location            String
+
+  productVariant      ProductVariant
+  quantity            Int
+  askingPricePerUnit  Decimal             @db.Decimal(10, 2)
+  availableFrom       DateTime
+
+  status              SellRequestStatus   @default(PENDING)
+  notes               String?
+
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  statusHistory       SellStatusHistory[]
+}
+
+model SellStatusHistory {
+  id            String            @id @default(cuid())
+  sellRequestId String
+  sellRequest   SellRequest       @relation(fields: [sellRequestId], references: [id])
+  status        SellRequestStatus
+  note          String?
+  changedBy     String?
+  changedAt     DateTime          @default(now())
+}
+
+enum SellRequestStatus {
+  PENDING
+  REVIEWING
+  ACCEPTED
+  REJECTED
+}
