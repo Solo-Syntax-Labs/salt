@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db'
 import { orderSchema } from '@/lib/validations'
 import { generateOrderNumber, PRODUCT_VARIANTS } from '@/lib/utils'
 import { sendOrderEmails } from '@/lib/email'
-import { OrderStatus } from '@/app/generated/prisma'
+import { OrderStatus } from '@prisma/client'
 
 export async function POST(req: NextRequest) {
   try {
